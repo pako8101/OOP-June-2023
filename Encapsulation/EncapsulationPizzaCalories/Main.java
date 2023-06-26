@@ -1,4 +1,4 @@
-package EncapsulationPizzaCalories;
+package Encapsulation.EncapsulationPizzaCalories;
 
 import java.util.Scanner;
 
