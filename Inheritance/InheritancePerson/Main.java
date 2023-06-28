@@ -11,8 +11,8 @@ public class Main {
 
         Child child = new Child(name, age);
 
-        System.out.println(child.getName());
-        System.out.println(child.getAge());
+        System.out.println(child);
+        System.out.println(child);
     }
 }
 
