@@ -8,7 +8,7 @@ public  class Vehicle {
 
     public Vehicle(double fuelQuantity, double fuelConsumption) {
         this.fuelQuantity = fuelQuantity;
-        this.fuelConsumption = fuelConsumption;
+        this.setFuelConsumption(fuelConsumption);
     }
 
     public String drive(double distance) {
