@@ -6,9 +6,9 @@ public class Box {
     private double height;
 
     public Box(double length, double width, double height) {
-        setLength(length);
-        setWidth(width);
-        setHeight(height);
+        this.setLength(length);
+        this.setWidth(width);
+        this.setHeight(height);
     }
 
     public double getLength() {
