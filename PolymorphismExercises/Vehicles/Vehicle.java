@@ -1,4 +1,4 @@
-package PolymorphismExercises.Vehicles;
+package Vehicles;
 
 import java.text.DecimalFormat;
 
@@ -8,12 +8,12 @@ public  class Vehicle {
 
     public Vehicle(double fuelQuantity, double fuelConsumption) {
         this.fuelQuantity = fuelQuantity;
-        this.setFuelConsumption(fuelConsumption);
+        this.fuelConsumption = fuelConsumption;
     }
 
     public String drive(double distance) {
         double fuelNeeded = distance * this.fuelConsumption;
-        if (fuelNeeded > this.fuelQuantity) {
+        if (fuelNeeded >= this.fuelQuantity) {
             return String.format("%s needs refueling", this.getClass().getSimpleName());
         }
         this.fuelQuantity = this.fuelQuantity - fuelNeeded;

@@ -1,8 +1,7 @@
-package PolymorphismExercises.Vehicles;
+package Vehicles;
 
 public class Car extends Vehicle {
-    private static final double ADDITIONAL_AC_CONSUMPTION = 0.9;
-
+private static final double ADDITIONAL_AC_CONSUMPTION = 0.9;
     public Car(double fuelQuantity, double fuelConsumption) {
         super(fuelQuantity, fuelConsumption);
 
@@ -12,6 +11,6 @@ public class Car extends Vehicle {
 
     @Override
     public void setFuelConsumption(double fuelConsumption) {
-        super.setFuelConsumption(fuelConsumption + ADDITIONAL_AC_CONSUMPTION);
+        super.setFuelConsumption(fuelConsumption+ADDITIONAL_AC_CONSUMPTION);
     }
 }
