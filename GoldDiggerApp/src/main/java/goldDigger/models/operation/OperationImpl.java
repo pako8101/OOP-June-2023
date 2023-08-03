@@ -11,6 +11,7 @@ public class OperationImpl implements Operation {
 
     @Override
     public void startOperation(Spot spot, Collection<Discoverer> discoverers) {
+        Iterator<String> iterator = spot.getExhibits().iterator();
         for (Discoverer discoverer : discoverers) {
 //            for (String exhibit : spot.getExhibits()) {
 //                if (!discoverer.canDig()) {
@@ -20,7 +21,7 @@ public class OperationImpl implements Operation {
 //                spot.getExhibits().remove(exhibit);
 //                discoverer.getMuseum().getExhibits().add(exhibit);
 //            }
-            Iterator<String> iterator = spot.getExhibits().iterator();
+
             while (iterator.hasNext()){
                 if (!discoverer.canDig()){
                     break;

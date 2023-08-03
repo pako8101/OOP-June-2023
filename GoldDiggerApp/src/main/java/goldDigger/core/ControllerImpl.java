@@ -11,9 +11,7 @@ import goldDigger.models.spot.SpotImpl;
 import goldDigger.repositories.DiscovererRepository;
 import goldDigger.repositories.SpotRepository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -63,7 +61,10 @@ public class ControllerImpl implements Controller {
         if (discovererRepository.byName(discovererName) == null) {
             throw new IllegalArgumentException(String.format(DISCOVERER_DOES_NOT_EXIST, discovererName));
         }
-        this.discovererRepository.remove(discovererRepository.byName(discovererName));
+        boolean removed = discovererRepository.remove(discovererRepository.byName(discovererName));
+        if (!removed) {
+            throw new IllegalArgumentException(String.format(DISCOVERER_DOES_NOT_EXIST, discovererName));
+        }
         return String.format(DISCOVERER_EXCLUDE, discovererName);
 
 
@@ -85,24 +86,34 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String inspectSpot(String spotName) {
-        Spot spot = this.spotRepository.byName(spotName);
-
-        Collection<Discoverer> collection = this.discovererRepository.getCollection();
-        List<Discoverer> goingToMission = new ArrayList<>();
-        List<Discoverer> excluded = new ArrayList<>();
-        for (Discoverer discoverer : collection) {
-            if (discoverer.getEnergy() > 45) {
-                goingToMission.add(discoverer);
-            } else {
-                excluded.add(discoverer);
-            }
-        }
-        if (goingToMission.isEmpty()) {
+        List<Discoverer> discoverers = this.discovererRepository.getCollection().stream()
+                .filter(d -> d.getEnergy() > 45)
+                .collect(Collectors.toList());
+        if (discoverers.isEmpty()) {
             throw new IllegalArgumentException(SPOT_DISCOVERERS_DOES_NOT_EXISTS);
         }
+        Spot spot = this.spotRepository.byName(spotName);
+        Operation operation = new OperationImpl();
+        operation.startOperation(spot, discoverers);
+        long excluded = discoverers.stream().filter(d -> d.getEnergy() == 0).count();
         inspectionCount++;
-        this.operation.startOperation(spot, goingToMission);
-        return String.format(INSPECT_SPOT, spotName, excluded.size());
+        return String.format(INSPECT_SPOT, spotName, excluded);
+//        Collection<Discoverer> collection = this.discovererRepository.getCollection();
+//        List<Discoverer> goingToMission = new ArrayList<>();
+//        List<Discoverer> excluded = new ArrayList<>();
+//        for (Discoverer discoverer : collection) {
+//            if (discoverer.getEnergy()<=45) {
+//                excluded.add(discoverer);
+//            } else {
+//                goingToMission.add(discoverer);
+//            }
+//        }
+//        if (goingToMission.isEmpty()) {
+//            throw new IllegalArgumentException(SPOT_DISCOVERERS_DOES_NOT_EXISTS);
+//        }
+//        inspectionCount++;
+//
+//        return String.format(INSPECT_SPOT, spotName, excluded.size());
     }
 
     @Override
@@ -112,8 +123,8 @@ public class ControllerImpl implements Controller {
                 .map(Discoverer::toString)
                 .collect(Collectors.joining("\n"));
 
-       return String.format(FINAL_SPOT_INSPECT, inspectionCount) + "\n" +
-                FINAL_DISCOVERER_INFO + "\n" + discoverers;
+        return String.format(FINAL_SPOT_INSPECT, inspectionCount) + System.lineSeparator() +
+                FINAL_DISCOVERER_INFO + System.lineSeparator() + discoverers;
 
     }
 }

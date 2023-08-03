@@ -59,20 +59,25 @@ public abstract class BaseDiscoverer implements Discoverer {
 
     @Override
     public void dig() {
-        this.energy -= 15;
-        if (this.energy < 0) {
-            this.energy = 0;
-        }
+//        this.energy -= 15;
+//        if (this.energy < 0) {
+//            this.energy = 0;
+//        }
+        setEnergy(Math.max(getEnergy()-15,0));
     }
 
     @Override
     public String toString() {
-        String exhibits = String.join(FINAL_DISCOVERER_MUSEUM_EXHIBITS_DELIMITER,this.museum.getExhibits());
-        if (this.museum.getExhibits().isEmpty()){
-            exhibits = "None";
-        }
-        return String.format(FINAL_DISCOVERER_NAME, this.name) + "\n" +
-                String.format(FINAL_DISCOVERER_ENERGY,this.energy) + "\n"+
-                        String.format(FINAL_DISCOVERER_MUSEUM_EXHIBITS,exhibits);
+        String exhibits = this.museum.getExhibits().isEmpty() ? "None"
+                : String.join(FINAL_DISCOVERER_MUSEUM_EXHIBITS_DELIMITER,this.museum.getExhibits());
+
+
+//                String exhibits = String.join(FINAL_DISCOVERER_MUSEUM_EXHIBITS_DELIMITER,this.museum.getExhibits());
+//        if (this.museum.getExhibits().isEmpty()){
+//            exhibits = "None";
+//        }
+        return String.format(FINAL_DISCOVERER_NAME, this.name) + System.lineSeparator() +
+                String.format(FINAL_DISCOVERER_ENERGY,this.energy) + System.lineSeparator() +
+                        String.format(FINAL_DISCOVERER_MUSEUM_EXHIBITS,exhibits).trim();
     }
 }
